@@ -69,9 +69,17 @@ const SignUp = () => {
       
     } catch (error) {
       console.error('Signup error:', error.code);
-      setError(error.code === 'auth/email-already-in-use' 
-        ? 'This email is already registered.' 
-        : 'Failed to create account. Please try again.');
+      
+      if (error.code === 'auth/email-already-in-use') {
+        setError('An account with this email already exists. Please log in instead.');
+        // Highlight the error with a special class
+        document.getElementById('email').classList.add('input-error');
+        setTimeout(() => {
+          document.getElementById('email').classList.remove('input-error');
+        }, 3000);
+      } else {
+        setError('Failed to create account. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

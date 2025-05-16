@@ -53,11 +53,23 @@ const Login = () => {
     } catch (error) {
       console.error('Login error:', error.code);
       
-      setError(
-        error.code === 'auth/invalid-credential' 
-          ? 'Invalid email or password' 
-          : `Login failed. Please try again.`
-      );
+      if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
+        setError('Account not found. Please check your email or sign up.');
+        // Highlight the email field with error
+        document.getElementById('email').classList.add('input-error');
+        setTimeout(() => {
+          document.getElementById('email').classList.remove('input-error');
+        }, 3000);
+      } else if (error.code === 'auth/wrong-password') {
+        setError('Incorrect password. Please try again.');
+        // Highlight the password field with error
+        document.getElementById('password').classList.add('input-error');
+        setTimeout(() => {
+          document.getElementById('password').classList.remove('input-error');
+        }, 3000);
+      } else {
+        setError(`Login failed. Please try again.`);
+      }
     } finally {
       setLoading(false);
     }
