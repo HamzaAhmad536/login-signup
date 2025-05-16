@@ -84,7 +84,17 @@ const SignUp = () => {
       setAuthResult(null);
       
       const provider = new GoogleAuthProvider();
+      
+      // Force account selection even if already logged in
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+      
       const result = await signInWithPopup(auth, provider);
+      
+      console.log('=============================================');
+      console.log('GOOGLE AUTH UID:', result.user.uid);
+      console.log('=============================================');
       
       const userData = {
         uid: result.user.uid,

@@ -70,6 +70,12 @@ const Login = () => {
       setAuthResult(null);
       
       const provider = new GoogleAuthProvider();
+      
+      // Force account selection even if already logged in
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+      
       const result = await signInWithPopup(auth, provider);
       
       const userData = {
